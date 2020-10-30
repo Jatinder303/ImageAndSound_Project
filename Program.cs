@@ -13,7 +13,7 @@ namespace ImageAndSound_Project
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WelcomeForm());
+            Application.Run(new ImagesAndSound());
         }
     }
 }

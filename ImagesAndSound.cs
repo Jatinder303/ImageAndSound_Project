@@ -8,7 +8,8 @@ namespace ImageAndSound_Project
 {
     public partial class ImagesAndSound : Form
     {
-        WelcomeForm welcome_obj = new WelcomeForm();
+
+        LogicClass logic_obj = new LogicClass();
         public ImagesAndSound()
         {
             InitializeComponent();
@@ -16,6 +17,8 @@ namespace ImageAndSound_Project
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
+            logic_obj.load();
+
             //code to display image in picture box on button click  
 
             Assembly myAssembly = Assembly.GetExecutingAssembly();
@@ -33,6 +36,8 @@ namespace ImageAndSound_Project
 
         private void Btn_Spin_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(logic_obj.spin().ToString());
+
             //code to display image in picture box on button click  
 
             Assembly myAssembly = Assembly.GetExecutingAssembly();
@@ -43,8 +48,49 @@ namespace ImageAndSound_Project
             //code to play soundwhen click on Load button  
             System.Media.SoundPlayer Sound_Object = new System.Media.SoundPlayer(ImageAndSound_Project.Properties.Resources.barrel_spin);
             Sound_Object.Play();
+            Btn_Spin.Enabled = false;
+            btn_shoot.Enabled = true;
+            btn_shootAway.Enabled = true;
         }
 
+        private void btn_shoot_Click(object sender, EventArgs e)
+        {
+            if (logic_obj.shoot() == 0)
+            {
+                MessageBox.Show("best of luck for next time");
+            }
+            else
+            {
+                MessageBox.Show("empty shoot");
+            }
+        }
+
+        private void btn_shootAway_Click(object sender, EventArgs e)
+        {
+            if (logic_obj.chance < 2)
+            {
+                if (logic_obj.shoot() == 0)
+                {
+                    MessageBox.Show("You won the game");
+                    btn_shoot.Enabled = false;
+                    btn_shootAway.Enabled = false;
+                }
+                else
+                {
+                    logic_obj.chance++;
+                    if (logic_obj.chance == 2)
+                    {
+                        MessageBox.Show("best of luck for next time");
+                        btn_shoot.Enabled = false;
+                        btn_shootAway.Enabled = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("empty shoot");
+                    }
+                }
+            }
+        }
         private void Btn_Load_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.L)
@@ -52,14 +98,9 @@ namespace ImageAndSound_Project
                 Btn_Load.PerformClick();
             }
         }
-
-
         private void btn_Exit_Click(object sender, EventArgs e)
         {
-
-            welcome_obj.Show();
-
-            this.Close();
+            Application.Exit();
         }
     }
 }
